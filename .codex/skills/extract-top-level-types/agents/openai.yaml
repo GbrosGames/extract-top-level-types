@@ -1,0 +1,4 @@
+interface:
+  display_name: "Extract Top-Level Types"
+  short_description: "Run one-type-per-file cleanup safely"
+  default_prompt: "Use $extract-top-level-types to plan and run deterministic top-level C# type extraction in this project."
