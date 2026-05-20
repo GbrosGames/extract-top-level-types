@@ -1,6 +1,6 @@
 ---
 name: extract-top-level-types
-description: Deterministic workflow for splitting top-level C# types into separate files by folder, with optional Unity `unicli` import and compile verification and optional git commits. Use when a user wants one-type-per-file cleanup or says things like "Split top-level C# types into separate files", "Run extract-top-level-types on Assets/Scripts", "Clean up one-type-per-file in this Unity project", "potrzebuję zrobić porządek w projekcie i wynieść klasy do osobnych plików", "1 klasa per 1 plik", or "1 klasa = 1 plik".
+description: Deterministic workflow for splitting top-level C# types into separate files by folder, with optional Unity `unicli` import and compile verification and optional git commits. Use when a user wants one-type-per-file cleanup or says things like "Split top-level C# types into separate files", "Run extract-top-level-types on Assets/Scripts", or "Clean up one-type-per-file in this Unity project".
 ---
 
 # Extract Top Level Types

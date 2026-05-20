@@ -2,17 +2,46 @@
 
 Deterministic Roslyn-based extractor for splitting C# files so each top-level type ends up in its own file.
 
-The goal is repeatable cleanup. Given the same input, the tool produces the same output.
+This repository is also a Codex skill. The repository root is the skill root, so the recommended installation method is to clone it directly into your `skills` directory and update it later with `git pull`.
+
+## Install as a Codex Skill
+
+Recommended layout:
+
+- `~/.codex/skills/extract-top-level-types` on macOS/Linux
+- `%USERPROFILE%\.codex\skills\extract-top-level-types` on Windows
+
+Example:
+
+```powershell
+git clone https://github.com/GbrosGames/extract-top-level-types.git $env:USERPROFILE\.codex\skills\extract-top-level-types
+```
+
+After cloning there, Codex can discover the skill directly because these files are at repository root:
+
+- `SKILL.md`
+- `agents/openai.yaml`
+- `scripts/`
+
+To update later:
+
+```powershell
+git -C $env:USERPROFILE\.codex\skills\extract-top-level-types pull
+```
 
 ## Layout
 
-- `extract-top-level-types.ps1`
+- `SKILL.md`
+  - skill instructions and workflow
+- `agents/openai.yaml`
+  - UI metadata for the skill
+- `scripts/extract-top-level-types.ps1`
   - thin wrapper around `dotnet run`
-- `extract-top-level-types-unicli.ps1`
+- `scripts/extract-top-level-types-unicli.ps1`
   - optional Unity wrapper for `unicli` import and compile flow
-- `extract-top-level-types/Program.cs`
+- `scripts/extract-top-level-types/Program.cs`
   - extraction logic
-- `extract-top-level-types/TopLevelTypeExtractor.csproj`
+- `scripts/extract-top-level-types/TopLevelTypeExtractor.csproj`
   - tool project
 
 ## What It Does
@@ -68,37 +97,37 @@ Optional for Unity workflow:
 
 ## Usage
 
-From the tool directory:
+From the repository root:
 
 Dry run:
 
 ```powershell
-pwsh .\extract-top-level-types.ps1 C:\src\MyProject\Assets\Scripts\Diagnostics
+pwsh .\scripts\extract-top-level-types.ps1 C:\src\MyProject\Assets\Scripts\Diagnostics
 ```
 
 Apply:
 
 ```powershell
-pwsh .\extract-top-level-types.ps1 C:\src\MyProject\Assets\Scripts\Diagnostics -Apply
+pwsh .\scripts\extract-top-level-types.ps1 C:\src\MyProject\Assets\Scripts\Diagnostics -Apply
 ```
 
 Direct `dotnet` invocation:
 
 ```powershell
-dotnet run --project .\extract-top-level-types\TopLevelTypeExtractor.csproj -- C:\src\MyProject\Assets\Scripts\Diagnostics
-dotnet run --project .\extract-top-level-types\TopLevelTypeExtractor.csproj -- C:\src\MyProject\Assets\Scripts\Diagnostics --apply
+dotnet run --project .\scripts\extract-top-level-types\TopLevelTypeExtractor.csproj -- C:\src\MyProject\Assets\Scripts\Diagnostics
+dotnet run --project .\scripts\extract-top-level-types\TopLevelTypeExtractor.csproj -- C:\src\MyProject\Assets\Scripts\Diagnostics --apply
 ```
 
 You can also run it from inside the target repository with relative paths:
 
 ```powershell
-pwsh C:\tools\extract-top-level-types\extract-top-level-types.ps1 .\Assets\Scripts\Diagnostics
-pwsh C:\tools\extract-top-level-types\extract-top-level-types.ps1 .\Assets\Scripts\Diagnostics -Apply
+pwsh C:\tools\extract-top-level-types\scripts\extract-top-level-types.ps1 .\Assets\Scripts\Diagnostics
+pwsh C:\tools\extract-top-level-types\scripts\extract-top-level-types.ps1 .\Assets\Scripts\Diagnostics -Apply
 ```
 
 ## Unity Wrapper
 
-`extract-top-level-types-unicli.ps1` is optional. It keeps the extractor generic and adds Unity-specific orchestration:
+`scripts/extract-top-level-types-unicli.ps1` is optional. It keeps the extractor generic and adds Unity-specific orchestration:
 
 1. runs the extractor on one folder
 2. imports new and modified `.cs` assets through `unicli`
@@ -109,15 +138,15 @@ pwsh C:\tools\extract-top-level-types\extract-top-level-types.ps1 .\Assets\Scrip
 Usage from the Unity project root:
 
 ```powershell
-pwsh C:\tools\extract-top-level-types\extract-top-level-types-unicli.ps1 Assets/Scripts/Diagnostics
-pwsh C:\tools\extract-top-level-types\extract-top-level-types-unicli.ps1 Assets/Scripts/Diagnostics -Apply
+pwsh C:\tools\extract-top-level-types\scripts\extract-top-level-types-unicli.ps1 Assets/Scripts/Diagnostics
+pwsh C:\tools\extract-top-level-types\scripts\extract-top-level-types-unicli.ps1 Assets/Scripts/Diagnostics -Apply
 ```
 
 Usage from anywhere with an explicit project root:
 
 ```powershell
-pwsh .\extract-top-level-types-unicli.ps1 Assets/Scripts/Diagnostics -ProjectRoot C:\src\MyUnityProject
-pwsh .\extract-top-level-types-unicli.ps1 Assets/Scripts/Diagnostics -ProjectRoot C:\src\MyUnityProject -Apply
+pwsh .\scripts\extract-top-level-types-unicli.ps1 Assets/Scripts/Diagnostics -ProjectRoot C:\src\MyUnityProject
+pwsh .\scripts\extract-top-level-types-unicli.ps1 Assets/Scripts/Diagnostics -ProjectRoot C:\src\MyUnityProject -Apply
 ```
 
 The wrapper has no hardcoded machine-specific project paths.
